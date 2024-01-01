@@ -2,7 +2,6 @@
 
 {% block title %}Home{% endblock %}
 
-{% block content %}
 {% if user.is_authenticated %}
   Hi {{ user.username }}!
   <form method="post" action="{% url 'logout' %}">

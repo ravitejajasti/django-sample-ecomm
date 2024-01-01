@@ -1,1 +1,76 @@
-<h1>Dashboard</h1>
+{% extends "base.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+  Hi {{ user.username }}!
+
+
+      <!-- Card -->
+<div class="card">
+    <div class="card-header">
+      <h5 class="card-header-title">Your companies</h5>
+    </div>
+  
+    <!-- Table -->
+    <div class="table-responsive">
+      <table class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
+        <thead class="thead-light">
+          <tr>
+            <th>Company Name</th>
+            <th>CIN</th>
+            <th>State</th>
+            <th>Status</th>
+            <th>Directors</th>
+
+
+          </tr>
+        </thead>
+  
+        <tbody>
+        {% for i in comp_data %}
+
+          <tr>
+            <td>
+              <div class="d-flex align-items-center">
+                <div class="flex-shrink-0">
+                  <!-- <img class="avatar avatar-sm avatar-circle" src="../assets/img/160x160/img8.jpg" alt="Image Description">
+                </div> -->
+  
+                <div class="flex-grow-1 ms-3">
+                  <a class="d-inline-block link-dark" href="#">
+                    <h6 class="text-hover-primary mb-0">{{ i }} <!-- <img class="avatar avatar-xss ms-1" src="../assets/svg/illustrations/top-vendor.svg" alt="Image Description" data-bs-toggle="tooltip" data-bs-placement="top" title="Verified user"> -->
+                    </h6>
+                  </a>
+                  <small class="d-block">{{ i.email }}</small>
+                </div>
+              </div>
+            </td>
+            <td>
+                {{ i.cin }}
+            </td>
+            <td>
+                {{ i.state }}
+            </td>
+            <td>
+                {{ i.status }}
+            </td>
+            <td>
+                <ul>
+            {% for ass in i.companydirector_set.all %}
+                <li>{{ ass.director.name }}</li>
+                {% endfor %}
+            </ul>
+            </td>
+            
+          </tr>
+    {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+    <!-- End Table -->
+  
+  </div>
+  <!-- End Card -->
+      
+{% endif %}
+{% endblock %}

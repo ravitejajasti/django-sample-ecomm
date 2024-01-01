@@ -1,6 +1,9 @@
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from .models import Company, Director
+from django.shortcuts import render, get_object_or_404
 
 def register(request):
     if request.method == "POST":
@@ -29,6 +32,16 @@ def logout_view(request):
         logout(request)
         return redirect('login')
 
-def dashboard(request):
+def d(request):
     form = AuthenticationForm()
     return render(request, 'cportal/dashboard.html', {'form': form})
+
+@login_required
+def dashboard(request):
+    comp_ls = Company.objects.filter(owner=request.user)
+    return render(request, 'cportal/dashboard.html', {'comp_data': comp_ls})
+
+@login_required
+def companydetail(request, id):
+    comp = get_object_or_404(Company, pk=id)
+    return render(request, 'cportal/detail.html', {'comp': comp})

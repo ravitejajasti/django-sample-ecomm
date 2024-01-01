@@ -90,3 +90,37 @@ class CompanyDirector(models.Model):
     class Meta:
         verbose_name = 'Associated with'
         verbose_name_plural = 'Associated with'
+
+
+
+class OrderType(models.Model):
+    def get_currencies():
+        return {i: i for i in settings.CURRENCIES}
+    type = models.CharField(max_length=200, verbose_name='Order Type')
+    description = models.TextField(verbose_name='Description', help_text='Enter a brief description of the Order Type')
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    currency = models.CharField(max_length=3, choices=get_currencies)
+
+    def __str__(self):
+        return self.type
+
+class Order(models.Model):
+    order_status_choices = {
+    "COMPLETED": "COMPLETED",
+    "RENEWED": "RENEWED",
+    "CANCELLED": "CANCELLED",
+    "RECEIVED": "RECEIVED"
+
+    }
+
+    company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True, verbose_name='Company')
+    status = models.CharField(max_length=15, choices=order_status_choices, default='RECEIVED', verbose_name='Status')
+    type = models.ForeignKey(OrderType, on_delete=models.SET_NULL, null=True, default=None, verbose_name='Order Type')
+    
+    def __str__(self):
+        return str(self.id)
+
+    class Meta:
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
+
