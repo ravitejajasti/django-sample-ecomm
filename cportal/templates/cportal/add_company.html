@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+  Hi {{ user.username }}!
+  <form method="post">
+    {% csrf_token %}
+    <h2>Company Details</h2>
+    {{ company_form.name }}
+    {{ company_form.type }}
+
+
+    <h2>Contact Details</h2>
+    {{ director_form.name }}
+    <button type="submit">Submit</button>
+</form>
+
+  {% endif %}
+{% endblock %}

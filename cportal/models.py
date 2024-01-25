@@ -34,7 +34,7 @@ class Company(models.Model):
         'None': 'Unknown'
     }
     name = models.CharField(max_length=200)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Owner')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, default = 5, on_delete=models.CASCADE, verbose_name='Owner')
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, verbose_name='Country')
     state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True, verbose_name='State')
     cin = models.CharField(max_length=30, default=None, null=True, verbose_name='CIN')

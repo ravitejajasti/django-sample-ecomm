@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .models import Company, Director
 from django.shortcuts import render, get_object_or_404
+from .forms import DirectorForm, CompanyForm
 
 def register(request):
     if request.method == "POST":
@@ -45,3 +46,22 @@ def dashboard(request):
 def companydetail(request, id):
     comp = get_object_or_404(Company, pk=id)
     return render(request, 'cportal/detail.html', {'comp': comp})
+
+@login_required
+def add_company(request):
+    if request.method == 'POST':
+        company_form = CompanyForm(request.POST, prefix='company')
+        director_form = DirectorForm(request.POST, prefix='director')
+        if all([company_form.is_valid(), director_form.is_valid()]):
+            company = company_form.save()
+            director = director_form.save(commit=False)
+            director.save()
+
+            director.company.set([company])   
+
+    else:
+
+        company_form = CompanyForm(prefix='company')
+        director_form = DirectorForm(prefix='director')
+
+    return render(request, 'cportal/add_company.html', {'company_form': company_form, 'director_form': director_form})

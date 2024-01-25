@@ -1,15 +1,19 @@
-{% extends "base.html" %}
-{% block content %}
-{% if user.is_authenticated %}
-  Hi {{ user.username }}!
+  {% extends "base.html" %}
+  {% block content %}
+  {% if user.is_authenticated %}
+    Hi {{ user.username }}!
 
 
       <!-- Card -->
 <div class="card">
+  <div>
     <div class="card-header">
       <h5 class="card-header-title">Your companies</h5>
     </div>
-  
+    <div>
+      <a href="{% url 'add_company' %}">Register Company</button>
+    </div>
+  </div>
     <!-- Table -->
     <div class="table-responsive">
       <table class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
